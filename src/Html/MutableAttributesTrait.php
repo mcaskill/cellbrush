@@ -42,7 +42,7 @@ trait MutableAttributesTrait {
    *   The string of all attributes, starting with a space.
    *   E.g. ' class="class0 class1" id="5"'
    */
-  protected function renderAttributes() {
+  public function renderAttributes() {
     return $this->attributes->renderAttributes();
   }
 
@@ -52,7 +52,7 @@ trait MutableAttributesTrait {
    *
    * @return string
    */
-  protected function renderTag($tagName, $content) {
+  public function renderTag($tagName, $content) {
     return $this->attributes->renderTag($tagName, $content);
   }
 
@@ -61,7 +61,7 @@ trait MutableAttributesTrait {
    *
    * @return TagInterface
    */
-  protected function createTag($tagName) {
+  public function createTag($tagName) {
     return $this->attributes->createTag($tagName);
   }
 
