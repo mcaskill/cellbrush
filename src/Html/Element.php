@@ -17,7 +17,7 @@ class Element implements ElementInterface {
    *
    * @var string
    */
-  private $content;
+  protected $content;
 
   /**
    * @param string $tagName
