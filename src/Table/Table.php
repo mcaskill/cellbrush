@@ -6,12 +6,18 @@ use Donquixote\Cellbrush\Columns\ColumnClassesTrait;
 use Donquixote\Cellbrush\Columns\TableColumnsTrait;
 use Donquixote\Cellbrush\Html\Multiple\DynamicAttributesMap;
 use Donquixote\Cellbrush\Html\MutableAttributesTrait;
+use Donquixote\Cellbrush\Caption\Caption;
 use Donquixote\Cellbrush\Handle\RowHandle;
 use Donquixote\Cellbrush\TSection\TableSection;
 
 class Table extends TBodyWrapper implements TableInterface {
 
   use MutableAttributesTrait, TableColumnsTrait, ColumnClassesTrait;
+
+  /**
+   * @var Caption
+   */
+  private $caption;
 
   /**
    * @var TableSection
@@ -39,6 +45,7 @@ class Table extends TBodyWrapper implements TableInterface {
     $this->__constructTableColumns();
     $this->__constructColumnClasses();
     $this->columns;
+    $this->caption = new Caption();
     $this->thead = new TableSection('thead');
     parent::__construct(new TableSection('tbody'));
     $this->tfoot = new TableSection('tfoot');
@@ -50,6 +57,13 @@ class Table extends TBodyWrapper implements TableInterface {
    */
   static function create() {
     return new self();
+  }
+
+  /**
+   * @return Caption
+   */
+  function caption() {
+    return $this->caption;
   }
 
   /**
@@ -99,7 +113,8 @@ class Table extends TBodyWrapper implements TableInterface {
   function render() {
     $colAttributes = $this->colAttributes->staticCopy();
     $columns = $this->columns->takeSnapshot();
-    $html = '';
+    $html  = '';
+    $html .= $this->caption->render();
     $html .= $this->thead->render($columns, $colAttributes);
     $html .= $this->tfoot->render($columns, $colAttributes);
     $html .= $this->renderTBody($columns, $colAttributes);
