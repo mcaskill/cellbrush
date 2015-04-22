@@ -1,24 +1,22 @@
-[![Build Status](https://secure.travis-ci.org/donquixote/cellbrush.png)](https://travis-ci.org/donquixote/cellbrush)
+# Cellbrush Table Generator [![Build Status](https://secure.travis-ci.org/donquixote/cellbrush.png)](https://travis-ci.org/donquixote/cellbrush)
 
-# Cellbrush table generator
+Cellbrush is a HTML table generator for PHP.
 
-A library to generate HTML tables with PHP.
-
-Table structure:
+Table Structure:
 
 * Named rows and columns, so they can be targeted with string keys.
 * Colspan and rowspan using col groups and row groups.
 * Automatically fills up empty cells, to preserve the structural integrity.
 * Automatically warns on cell collisions.
 
-Tag attributes:
+Tag Attributes:
 
 * Easily add row classes.
 * Easily add row striping classes (odd/even zebra striping and more).
 * Easily add column classes that apply to all cells in the column.
 * (more planned)
 
-API design:
+API Design:
 
 * Method chaining instead of huge arrays of doom.
 * Shortcut notations for frequently used stuff.
@@ -26,10 +24,9 @@ API design:
 * Exceptions thrown for integrity violation.
 * Composer and PSR-4.
 
+## Basic Usage
 
-## Basic usage
-
-A simple 3x3 table with the diagonal cells filled. 
+A simple 3x3 table with the diagonal cells filled.
 
 ```php
 $table = \Donquixote\Cellbrush\Table\Table::create()
@@ -130,10 +127,10 @@ $table
   </tbody>
 </table>
 
-## Column groups
+## Column Groups
 
 Named column groups allow for cells with colspan.
-In the below example, the column name "products" specifies a colspan cell that spans all 3 products.* cells, whereas "products.a", "products.b" and "products.c" specifies specific cells without colspan. 
+In the below example, the column name "products" specifies a colspan cell that spans all 3 products.* cells, whereas "products.a", "products.b" and "products.c" specifies specific cells without colspan.
 
 ```php
 $table->addColNames(['legend', 'products.a', 'products.b', 'products.c']);
@@ -171,7 +168,7 @@ $table
 </table>
 
 
-## Row groups
+## Row Groups
 
 Similar to column groups.
 
@@ -241,7 +238,7 @@ $table->headRow()
   </tbody>
 </table>
 
-## Nested groups
+## Nested Groups
 
 Groups can have unlimited depth.
 
@@ -353,7 +350,7 @@ $table->colHandle('legend')
 </table>
 
 
-## Row classes
+## Row Classes
 
 Row classes can be added quite easily with `addRowClass()`.
 
@@ -361,7 +358,7 @@ Row classes can be added quite easily with `addRowClass()`.
 $table->addRowClass('row0', 'rowClass0');
 ```
 
-## Row striping
+## Row Striping
 
 Row striping classes can be added to a table section with `addRowStriping()`.
 
@@ -377,7 +374,7 @@ $table->addRowStriping(['1of3', '2of3', '3of3']);
 The striping always applies to a table section. By default, this wil be the main tbody section.
 
 
-## Column classes
+## Column Classes
 
 You can use `addColClass()` to add a class to all cells of a column.
 This can be done either for all table sections at once, or for specific table sections.
@@ -387,7 +384,7 @@ $table->addColClass('col0', 'allSectionsColumn0');
 $table->tbody()->addColClass('col0', 'tbodyColumn0');
 ```
 
-## Cell classes
+## Cell Classes
 
 Use `addCellClass()` to add classes to individual cells.
 
@@ -433,11 +430,11 @@ print $table->render();
   </tbody>
 </table>
 
-## More examples?
+## More Examples?
 
 You can see more examples in [the unit tests](https://github.com/donquixote/cellbrush/tree/master/tests/src).
 
-## Planned features
+## Planned Features
 
 Next steps:
 
