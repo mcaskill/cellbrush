@@ -6,6 +6,7 @@ use Donquixote\Cellbrush\Columns\ColumnAttributesTrait;
 use Donquixote\Cellbrush\Columns\TableColumnsTrait;
 use Donquixote\Cellbrush\Html\Multiple\DynamicAttributesMap;
 use Donquixote\Cellbrush\Html\MutableAttributesTrait;
+use Donquixote\Cellbrush\Caption\Caption;
 use Donquixote\Cellbrush\Handle\RowHandle;
 use Donquixote\Cellbrush\Renderer\IndentationInterface;
 use Donquixote\Cellbrush\Renderer\IndentationTrait;
@@ -16,6 +17,11 @@ use Donquixote\Cellbrush\TSection\TableSection;
 class Table extends TBodyWrapper implements TableInterface, IndentationInterface, RendererInterface {
 
   use MutableAttributesTrait, IndentationTrait, RendererTrait, TableColumnsTrait, ColumnAttributesTrait;
+
+  /**
+   * @var Caption
+   */
+  private $caption;
 
   /**
    * @var TableSection
@@ -43,6 +49,7 @@ class Table extends TBodyWrapper implements TableInterface, IndentationInterface
     $this->__constructRendererOptions();
     $this->__constructTableColumns();
     $this->__constructColumnAttributes();
+    $this->caption = new Caption();
     $this->thead = new TableSection('thead', $this);
     parent::__construct(new TableSection('tbody', $this));
     $this->tfoot = new TableSection('tfoot', $this);
@@ -53,6 +60,13 @@ class Table extends TBodyWrapper implements TableInterface, IndentationInterface
    */
   static function create() {
     return new self();
+  }
+
+  /**
+   * @return Caption
+   */
+  function caption() {
+    return $this->caption;
   }
 
   /**
@@ -102,14 +116,18 @@ class Table extends TBodyWrapper implements TableInterface, IndentationInterface
   function render() {
     $colAttributes = $this->colAttributes->staticCopy();
     $columns = $this->columns->takeSnapshot();
-    $html = '';
+    $eol = $this->getEOL();
+    $ind = $this->getIndent(true);
+    $html  = '';
+    if ($this->caption->hasContent()) {
+      $html .= $ind . $this->caption->render() . $eol;
+    }
     $html .= $this->thead->render($columns, $colAttributes);
     $html .= $this->tfoot->render($columns, $colAttributes);
     $html .= $this->renderTBody($columns, $colAttributes);
     foreach ($this->tbodies as $tbody) {
       $html .= $tbody->render($columns, $colAttributes);
     }
-    $eol = $this->getEOL();
     return $this->renderTag('table', $eol . $html) . $eol;
   }
 }
