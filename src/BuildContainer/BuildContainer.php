@@ -9,6 +9,9 @@ use Donquixote\Cellbrush\Html\Attributes;
 use Donquixote\Cellbrush\Html\AttributesInterface;
 use Donquixote\Cellbrush\Html\Multiple\StaticAttributesMap;
 use Donquixote\Cellbrush\Matrix\CellMatrix;
+use Donquixote\Cellbrush\Renderer\IndentationInterface;
+use Donquixote\Cellbrush\Renderer\IndentationTrait;
+use Donquixote\Cellbrush\TSection\TableSectionInterface;
 
 /**
  * @property Cell\CellInterface[][] NamedCells
@@ -28,7 +31,9 @@ use Donquixote\Cellbrush\Matrix\CellMatrix;
  * @property string InnerHtml
  *   Inner html of the table section.
  */
-class BuildContainer extends BuildContainerBase {
+class BuildContainer extends BuildContainerBase implements IndentationInterface {
+
+  use IndentationTrait;
 
   /**
    * @var Axis
@@ -41,12 +46,18 @@ class BuildContainer extends BuildContainerBase {
   private $columns;
 
   /**
+   * @var TableSectionInterface
+   */
+  public $parentNode;
+
+  /**
    * @param Axis $rows
    * @param Axis $columns
    */
-  function __construct(Axis $rows, Axis $columns) {
+  function __construct(Axis $rows, Axis $columns, TableSectionInterface $parentNode = null) {
     $this->rows = $rows;
     $this->columns = $columns;
+    $this->parentNode = $parentNode;
     parent::__construct();
   }
 
@@ -253,9 +264,19 @@ class BuildContainer extends BuildContainerBase {
   protected function get_InnerHtml() {
     $innerHtml = '';
     $indexedRowAttributes = $this->IndexedRowAttributes;
+
+    $parent = $this->parentNode;
+    if ($parent instanceof TableSectionInterface) {
+      $eol = $parent->parentNode->getEOL();
+      $ind = $this->setIndentLevel($parent->getIndentLevel() + 1)->getIndent();
+    }
+    else {
+      $eol = $ind = '';
+    }
+
     foreach ($this->RowsInnerHtml as $rowIndex => $rowInnerHtml) {
       if (isset($indexedRowAttributes[$rowIndex])) {
-        $innerHtml .= '    ' . $indexedRowAttributes[$rowIndex]->renderTag('tr', $rowInnerHtml) . "\n";
+        $innerHtml .= $ind . $indexedRowAttributes[$rowIndex]->renderTag('tr', $rowInnerHtml) . $eol;
       }
     }
     return $innerHtml;

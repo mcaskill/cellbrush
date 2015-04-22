@@ -7,11 +7,15 @@ use Donquixote\Cellbrush\Columns\TableColumnsTrait;
 use Donquixote\Cellbrush\Html\Multiple\DynamicAttributesMap;
 use Donquixote\Cellbrush\Html\MutableAttributesTrait;
 use Donquixote\Cellbrush\Handle\RowHandle;
+use Donquixote\Cellbrush\Renderer\IndentationInterface;
+use Donquixote\Cellbrush\Renderer\IndentationTrait;
+use Donquixote\Cellbrush\Renderer\RendererInterface;
+use Donquixote\Cellbrush\Renderer\RendererTrait;
 use Donquixote\Cellbrush\TSection\TableSection;
 
-class Table extends TBodyWrapper implements TableInterface {
+class Table extends TBodyWrapper implements TableInterface, IndentationInterface, RendererInterface {
 
-  use MutableAttributesTrait, TableColumnsTrait, ColumnAttributesTrait;
+  use MutableAttributesTrait, IndentationTrait, RendererTrait, TableColumnsTrait, ColumnAttributesTrait;
 
   /**
    * @var TableSection
@@ -36,11 +40,12 @@ class Table extends TBodyWrapper implements TableInterface {
    */
   function __construct() {
     $this->__constructMutableAttributes();
+    $this->__constructRendererOptions();
     $this->__constructTableColumns();
     $this->__constructColumnAttributes();
-    $this->thead = new TableSection('thead');
-    parent::__construct(new TableSection('tbody'));
-    $this->tfoot = new TableSection('tfoot');
+    $this->thead = new TableSection('thead', $this);
+    parent::__construct(new TableSection('tbody', $this));
+    $this->tfoot = new TableSection('tfoot', $this);
   }
 
   /**
@@ -69,7 +74,7 @@ class Table extends TBodyWrapper implements TableInterface {
     }
     return isset($this->tbodies[$name])
       ? $this->tbodies[$name]
-      : $this->tbodies[$name] = new TableSection('tbody');
+      : $this->tbodies[$name] = new TableSection('tbody', $this);
   }
 
   /**
@@ -104,6 +109,7 @@ class Table extends TBodyWrapper implements TableInterface {
     foreach ($this->tbodies as $tbody) {
       $html .= $tbody->render($columns, $colAttributes);
     }
-    return $this->renderTag('table', "\n" . $html) . "\n";
+    $eol = $this->getEOL();
+    return $this->renderTag('table', $eol . $html) . $eol;
   }
 }

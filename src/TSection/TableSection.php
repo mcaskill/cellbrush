@@ -12,12 +12,15 @@ use Donquixote\Cellbrush\Html\Multiple\StaticAttributesMap;
 use Donquixote\Cellbrush\Html\MutableAttributesTrait;
 use Donquixote\Cellbrush\Handle\RowHandle;
 use Donquixote\Cellbrush\Handle\SectionColHandle;
+use Donquixote\Cellbrush\Renderer\IndentationInterface;
+use Donquixote\Cellbrush\Renderer\IndentationTrait;
+use Donquixote\Cellbrush\Table\TableInterface;
 use Donquixote\Cellbrush\Rows\RowAttributesTrait;
 use Donquixote\Cellbrush\Rows\TableRowsTrait;
 
-class TableSection implements TableSectionInterface {
+class TableSection implements TableSectionInterface, IndentationInterface {
 
-  use MutableAttributesTrait, TableRowsTrait, RowAttributesTrait, ColumnAttributesTrait;
+  use MutableAttributesTrait, TableRowsTrait, RowAttributesTrait, ColumnAttributesTrait, IndentationTrait;
 
   /**
    * @var string
@@ -55,14 +58,21 @@ class TableSection implements TableSectionInterface {
   private $cellClasses = [];
 
   /**
-   * @param string $tagName
+   * @var TableInterface
    */
-  function __construct($tagName) {
+  public $parentNode;
+
+  /**
+   * @param string $tagName
+   * @param TableInterface|null $parentNode
+   */
+  function __construct($tagName, TableInterface $parentNode = null) {
     $this->__constructMutableAttributes();
     $this->__constructColumnAttributes();
     $this->__constructTableRows();
     $this->__constructRowAttributes();
     $this->tagName = $tagName;
+    $this->parentNode = $parentNode;
   }
 
   /**
@@ -208,9 +218,19 @@ class TableSection implements TableSectionInterface {
       return '';
     }
 
+    $parent = $this->parentNode;
+    if ($parent instanceof TableInterface) {
+      $eol = $parent->getEOL();
+      $ind = $this->setIndentLevel($parent->getIndentLevel() + 1)->getIndent();
+    }
+    else {
+      $eol = $ind = '';
+    }
+
     $container = new BuildContainer(
       $this->rows->takeSnapshot(),
-      $columns);
+      $columns,
+      $this);
 
     /** @var BuildContainerBase $container */
     $container->CellContents = $this->cellContents;
@@ -225,7 +245,7 @@ class TableSection implements TableSectionInterface {
     /** @var BuildContainer $container */
     $innerHtml = $container->InnerHtml;
 
-    return '  ' . $this->renderTag($this->tagName, "\n" . $innerHtml . '  ') . "\n";
+    return $ind . $this->renderTag($this->tagName, $eol . $innerHtml . $ind) . $eol;
   }
 
 }
