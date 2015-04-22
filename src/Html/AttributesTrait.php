@@ -97,7 +97,7 @@ trait AttributesTrait {
    *   The string of all attributes, starting with a space.
    *   E.g. ' class="class0 class1" id="5"'
    */
-  protected function renderAttributes() {
+  public function renderAttributes() {
     $attributes = $this->attributes;
     if (!empty($this->classes)) {
       $attributes['class'] = implode(' ', $this->classes);
@@ -115,7 +115,7 @@ trait AttributesTrait {
    *
    * @return string
    */
-  protected function renderTag($tagName, $content) {
+  public function renderTag($tagName, $content) {
     return '<' . $tagName . $this->renderAttributes() . '>' . $content . '</' . $tagName . '>';
   }
 
@@ -124,7 +124,7 @@ trait AttributesTrait {
    *
    * @return TagInterface
    */
-  protected function createTag($tagName) {
+  public function createTag($tagName) {
     $tag = new Tag($tagName);
     $tag->attributes = $this->attributes;
     $tag->classes = $this->classes;
