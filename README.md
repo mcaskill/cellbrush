@@ -1,4 +1,6 @@
-# Cellbrush Table Generator [![Build Status](https://secure.travis-ci.org/donquixote/cellbrush.png)](https://travis-ci.org/donquixote/cellbrush)
+# Cellbrush Negative Zone
+
+**This development branch is volatile; it is frequently deleted and rebuilt.**
 
 Cellbrush is a HTML table generator for PHP.
 
