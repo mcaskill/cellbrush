@@ -67,4 +67,13 @@ trait TableColumnsTrait {
     return $this;
   }
 
+  /**
+   * @param string $colName
+   *
+   * @return true
+   */
+  function colExists($colName) {
+    return $this->columns->nameExists($colName);
+  }
+
 }

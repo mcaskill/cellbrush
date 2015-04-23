@@ -45,4 +45,11 @@ interface TableColumnsInterface {
    * @throws \Exception
    */
   function setColOrder($orderedBaseColNames, $groupPrefix = null);
+
+  /**
+   * @param string $colName
+   *
+   * @return true
+   */
+  function colExists($colName);
 }
