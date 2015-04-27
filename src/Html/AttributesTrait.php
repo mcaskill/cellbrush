@@ -93,6 +93,24 @@ trait AttributesTrait {
   }
 
   /**
+   * @param string[] $attributes
+   *
+   * @return static
+   */
+  function setAttributes(array $attributes) {
+    $clone = clone $this;
+    foreach ($attributes as $attribute => $value) {
+      if (isset($this->attributes[$key]) && $value === $this->attributes[$key]) {
+        continue;
+      }
+      else {
+        $clone->attributes[$key] = $value;
+      }
+    }
+    return $clone;
+  }
+
+  /**
    * @return string
    *   The string of all attributes, starting with a space.
    *   E.g. ' class="class0 class1" id="5"'

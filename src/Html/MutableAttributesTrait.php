@@ -35,6 +35,28 @@ trait MutableAttributesTrait {
    */
   function addClasses(array $classes) {
     $this->attributes = $this->attributes->addClasses($classes);
+    return $this;
+  }
+
+  /**
+   * @param string $key
+   * @param string $value
+   *
+   * @return $this
+   */
+  function setAttribute($key, $value) {
+    $this->attributes = $this->attributes->setAttribute($key, $value);
+    return $this;
+  }
+
+  /**
+   * @param string[] $attributes
+   *
+   * @return $this
+   */
+  function setAttributes(array $attributes) {
+    $this->attributes = $this->attributes->setAttributes($attributes);
+    return $this;
   }
 
   /**
