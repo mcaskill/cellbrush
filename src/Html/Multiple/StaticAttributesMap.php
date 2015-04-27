@@ -32,7 +32,11 @@ class StaticAttributesMap extends AttributesMapBase {
         $rowCells[$name] = $rowCells[$name]->addClasses($classes);
       }
     }
-    // @todo Implement for attributes.
+    foreach ($this->attributes as $name => $attributes) {
+      if (isset($rowCells[$name])) {
+        $rowCells[$name] = $rowCells[$name]->setAttributes($attributes);
+      }
+    }
   }
 
   /**
@@ -43,10 +47,20 @@ class StaticAttributesMap extends AttributesMapBase {
   public function merge(StaticAttributesMap $otherMap) {
     $new = clone $this;
     foreach ($otherMap->attributes as $name => $attributes) {
-      $new->attributes[$name] += $attributes;
+      if ( isset($new->attributes[$name]) ) {
+        $new->attributes[$name] += $attributes;
+      }
+      else {
+        $new->attributes[$name] = $attributes;
+      }
     }
     foreach ($otherMap->classes as $name => $classes) {
-      $new->classes[$name] += $classes;
+      if ( isset($new->classes[$name]) ) {
+        $new->classes[$name] += $classes;
+      }
+      else {
+        $new->classes[$name] = $classes;
+      }
     }
     return $new;
   }

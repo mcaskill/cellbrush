@@ -28,7 +28,7 @@ class DynamicAttributesMap extends AttributesMapBase {
    * @param string $name
    * @param string[] $classes
    */
-  public function nameAddClasses($name, $classes) {
+  public function nameAddClasses($name, array $classes) {
     foreach ($classes as $class) {
       $this->classes[$name][$class] = $class;
     }
@@ -37,8 +37,6 @@ class DynamicAttributesMap extends AttributesMapBase {
   /**
    * @param string[] $namesClasses
    *   Format: $[$name] = $class
-   *
-   * @return $this
    */
   public function namesAddClasses(array $namesClasses) {
     foreach ($namesClasses as $name => $class) {
@@ -53,6 +51,28 @@ class DynamicAttributesMap extends AttributesMapBase {
    */
   public function nameSetAttribute($name, $key, $value) {
     $this->attributes[$name][$key] = $value;
+  }
+
+  /**
+   * @param string $name
+   * @param string[] $attributes
+   */
+  public function nameSetAttributes($name, array $attributes) {
+    foreach ($attributes as $key => $value) {
+      $this->attributes[$name][$key] = $value;
+    }
+  }
+
+  /**
+   * @param string[] $namesAttributes
+   *   Format: $[$colName] = [$key => $value]
+   */
+  public function namesSetAttributes(array $namesAttributes) {
+    foreach ($namesAttributes as $name => $attributes) {
+      foreach ($attributes as $key => $value) {
+        $this->attributes[$name][$key] = $value;
+      }
+    }
   }
 
 }

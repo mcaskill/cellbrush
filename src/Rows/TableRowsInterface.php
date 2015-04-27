@@ -1,5 +1,6 @@
 <?php
-namespace Donquixote\Cellbrush\TSection;
+
+namespace Donquixote\Cellbrush\Rows;
 
 /**
  * Interface for a collection of table rows.

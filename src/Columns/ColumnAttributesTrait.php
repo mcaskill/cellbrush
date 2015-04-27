@@ -5,9 +5,9 @@ namespace Donquixote\Cellbrush\Columns;
 use Donquixote\Cellbrush\Html\Multiple\DynamicAttributesMap;
 
 /**
- * @see ColumnClassesInterface
+ * @see ColumnAttributesInterface
  */
-trait ColumnClassesTrait {
+trait ColumnAttributesTrait {
 
   /**
    * Column classes for all table sections.
@@ -16,7 +16,7 @@ trait ColumnClassesTrait {
    */
   private $colAttributes;
 
-  function __constructColumnClasses() {
+  function __constructColumnAttributes() {
     $this->colAttributes = new DynamicAttributesMap();
   }
 
@@ -37,8 +37,31 @@ trait ColumnClassesTrait {
    *
    * @return $this
    */
-  function addColClasses(array $colClasses) {
+  public function addColClasses(array $colClasses) {
     $this->colAttributes->namesAddClasses($colClasses);
+    return $this;
+  }
+
+  /**
+   * @param string $colName
+   * @param string $key
+   * @param string $value
+   *
+   * @return $this
+   */
+  public function setColAttribute($colName, $key, $value) {
+    $this->colAttributes->nameSetAttribute($colName, $key, $value);
+    return $this;
+  }
+
+  /**
+   * @param string[] $namesAttributes
+   *   Format: $[$colName] = [$key => $value]
+   *
+   * @return $this
+   */
+  public function setColAttributes(array $namesAttributes) {
+    $this->colAttributes->namesSetAttributes($namesAttributes);
     return $this;
   }
 

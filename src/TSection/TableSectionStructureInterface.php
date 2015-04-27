@@ -2,6 +2,8 @@
 
 namespace Donquixote\Cellbrush\TSection;
 
+use Donquixote\Cellbrush\Rows\TableRowsInterface;
+
 /**
  * Interface for a table section, without TagAttributesInterface
  */
@@ -32,30 +34,6 @@ interface TableSectionStructureInterface extends TableRowsInterface {
    * @throws \Exception
    */
   public function addRow($rowName);
-
-  /**
-   * @param string $rowName
-   * @param string $class
-   *
-   * @return $this
-   */
-  public function addRowClass($rowName, $class);
-
-  /**
-   * @param string[] $rowClasses
-   *   Format: $[$rowName] = $class
-   *
-   * @return $this
-   */
-  public function addRowClasses(array $rowClasses);
-
-  /**
-   * @param string[] $striping
-   *   Classes for striping. E.g. ['odd', 'even'], or '['1st', '2nd', '3rd'].
-   *
-   * @return $this
-   */
-  public function addRowStriping(array $striping = ['odd', 'even']);
 
   /**
    * @param string|string[] $rowName

@@ -6,43 +6,23 @@ use Donquixote\Cellbrush\Axis\Axis;
 use Donquixote\Cellbrush\Axis\DynamicAxis;
 use Donquixote\Cellbrush\BuildContainer\BuildContainer;
 use Donquixote\Cellbrush\BuildContainer\BuildContainerBase;
+use Donquixote\Cellbrush\Columns\ColumnAttributesTrait;
 use Donquixote\Cellbrush\Html\Multiple\DynamicAttributesMap;
 use Donquixote\Cellbrush\Html\Multiple\StaticAttributesMap;
 use Donquixote\Cellbrush\Html\MutableAttributesTrait;
 use Donquixote\Cellbrush\Handle\RowHandle;
 use Donquixote\Cellbrush\Handle\SectionColHandle;
+use Donquixote\Cellbrush\Rows\RowAttributesTrait;
+use Donquixote\Cellbrush\Rows\TableRowsTrait;
 
 class TableSection implements TableSectionInterface {
 
-  use MutableAttributesTrait;
+  use MutableAttributesTrait, TableRowsTrait, RowAttributesTrait, ColumnAttributesTrait;
 
   /**
    * @var string
    */
   private $tagName;
-
-  /**
-   * @var \Donquixote\Cellbrush\Axis\DynamicAxis
-   */
-  private $rows;
-
-  /**
-   * @var \Donquixote\Cellbrush\Html\Multiple\DynamicAttributesMap
-   */
-  private $rowAttributes;
-
-  /**
-   * @var string[][]
-   *   Format: $[] = ['odd', 'even']
-   */
-  private $rowStripings = array();
-
-  /**
-   * Column classes for this table section.
-   *
-   * @var DynamicAttributesMap
-   */
-  private $colAttributes;
 
   /**
    * @var \Donquixote\Cellbrush\Cell\CellInterface[][]
@@ -79,10 +59,10 @@ class TableSection implements TableSectionInterface {
    */
   function __construct($tagName) {
     $this->__constructMutableAttributes();
+    $this->__constructColumnAttributes();
+    $this->__constructTableRows();
+    $this->__constructRowAttributes();
     $this->tagName = $tagName;
-    $this->rows = new DynamicAxis();
-    $this->colAttributes = new DynamicAttributesMap();
-    $this->rowAttributes = new DynamicAttributesMap();
   }
 
   /**
@@ -93,32 +73,6 @@ class TableSection implements TableSectionInterface {
    */
   public function colHandle($colName) {
     return new SectionColHandle($this, $colName);
-  }
-
-  /**
-   * Adds a column class for this table section.
-   *
-   * @param string $colName
-   * @param string $class
-   *
-   * @return $this
-   */
-  public function addColClass($colName, $class) {
-    $this->colAttributes->nameAddClass($colName, $class);
-    return $this;
-  }
-
-  /**
-   * Adds column classes for this table section.
-   *
-   * @param string[] $colClasses
-   *   Format: $[$colName] = $class
-   *
-   * @return $this
-   */
-  public function addColClasses(array $colClasses) {
-    $this->colAttributes->namesAddClasses($colClasses);
-    return $this;
   }
 
   /**
@@ -156,39 +110,6 @@ class TableSection implements TableSectionInterface {
   public function addRowIfNotExists($rowName) {
     $this->rows->addNameIfNotExists($rowName);
     return new RowHandle($this, $rowName);
-  }
-
-  /**
-   * @param string $rowName
-   * @param string $class
-   *
-   * @return $this
-   */
-  public function addRowClass($rowName, $class) {
-    $this->rowAttributes->nameAddClass($rowName, $class);
-    return $this;
-  }
-
-  /**
-   * @param string[] $rowClasses
-   *   Format: $[$rowName] = $class
-   *
-   * @return $this
-   */
-  public function addRowClasses(array $rowClasses) {
-    $this->rowAttributes->namesAddClasses($rowClasses);
-    return $this;
-  }
-
-  /**
-   * @param string[] $striping
-   *   Classes for striping. E.g. ['odd', 'even'], or '['1st', '2nd', '3rd'].
-   *
-   * @return $this
-   */
-  public function addRowStriping(array $striping = ['odd', 'even']) {
-    $this->rowStripings[] = $striping;
-    return $this;
   }
 
   /**
@@ -283,7 +204,6 @@ class TableSection implements TableSectionInterface {
    *   Rendered table section html.
    */
   function render(Axis $columns, StaticAttributesMap $tableColAttributes) {
-
     if ($this->rows->isEmpty() || !$columns->getCount()) {
       return '';
     }
@@ -306,48 +226,6 @@ class TableSection implements TableSectionInterface {
     $innerHtml = $container->InnerHtml;
 
     return '  ' . $this->renderTag($this->tagName, "\n" . $innerHtml . '  ') . "\n";
-  }
-
-  /**
-   * @param string $groupName
-   * @param string[] $rowNameSuffixes
-   *
-   * @return $this
-   * @throws \Exception
-   */
-  public function addRowGroup($groupName, $rowNameSuffixes) {
-    $this->rows->addGroup($groupName, $rowNameSuffixes);
-    return $this;
-  }
-
-  /**
-   * @param string $rowName
-   *
-   * @return $this
-   * @throws \Exception
-   */
-  function addRowName($rowName) {
-    $this->rows->addName($rowName);
-    return $this;
-  }
-
-  /**
-   * @param string[] $rowNames
-   *
-   * @return $this
-   */
-  function addRowNames(array $rowNames) {
-    $this->rows->addNames($rowNames);
-    return $this;
-  }
-
-  /**
-   * @param string $rowName
-   *
-   * @return true
-   */
-  function rowExists($rowName) {
-    return $this->rows->nameExists($rowName);
   }
 
 }

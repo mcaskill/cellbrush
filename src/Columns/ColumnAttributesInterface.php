@@ -2,7 +2,7 @@
 
 namespace Donquixote\Cellbrush\Columns;
 
-interface ColumnClassesInterface {
+interface ColumnAttributesInterface {
 
   /**
    * @param string $colName
@@ -18,6 +18,6 @@ interface ColumnClassesInterface {
    *
    * @return $this
    */
-  function addColClasses(array $colClasses);
+  public function addColClasses(array $colClasses);
 
 }
