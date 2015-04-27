@@ -2,28 +2,7 @@
 
 namespace Donquixote\Cellbrush\Handle;
 
-use Donquixote\Cellbrush\TSection\TableSection;
-
-class SectionColHandle {
-
-  /**
-   * @var TableSection
-   */
-  private $tsection;
-
-  /**
-   * @var string
-   */
-  protected $colName;
-
-  /**
-   * @param TableSection $tsection
-   * @param string $colName
-   */
-  function __construct(TableSection $tsection, $colName) {
-    $this->tsection = $tsection;
-    $this->colName = $colName;
-  }
+class SectionColHandle extends Handle {
 
   /**
    * @param string $rowName
@@ -32,7 +11,7 @@ class SectionColHandle {
    * @return $this
    */
   function td($rowName, $content) {
-    $this->tsection->td($rowName, $this->colName, $content);
+    $this->tsection->td($rowName, $this->handleName, $content);
     return $this;
   }
 
@@ -43,32 +22,32 @@ class SectionColHandle {
    * @return $this
    */
   function th($rowName, $content) {
-    $this->tsection->th($rowName, $this->colName, $content);
+    $this->tsection->th($rowName, $this->handleName, $content);
     return $this;
   }
 
   /**
    * @param string[] $cells
-   *   Format: $[$colName] = $content
+   *   Format: $[$handleName] = $content
    *
    * @return $this
    */
   function tdMultiple(array $cells) {
     foreach ($cells as $rowName => $content) {
-      $this->tsection->td($rowName, $this->colName, $content);
+      $this->tsection->td($rowName, $this->handleName, $content);
     }
     return $this;
   }
 
   /**
    * @param string[] $cells
-   *   Format: $[$colName] = $content
+   *   Format: $[$handleName] = $content
    *
    * @return $this
    */
   function thMultiple(array $cells) {
     foreach ($cells as $rowName => $content) {
-      $this->tsection->th($rowName, $this->colName, $content);
+      $this->tsection->th($rowName, $this->handleName, $content);
     }
     return $this;
   }

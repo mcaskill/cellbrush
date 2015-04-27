@@ -2,28 +2,7 @@
 
 namespace Donquixote\Cellbrush\Handle;
 
-use Donquixote\Cellbrush\TSection\TableSection;
-
-class RowHandle {
-
-  /**
-   * @var TableSection
-   */
-  private $tsection;
-
-  /**
-   * @var string
-   */
-  private $rowName;
-
-  /**
-   * @param TableSection $tsection
-   * @param string $rowName
-   */
-  function __construct(TableSection $tsection, $rowName) {
-    $this->tsection = $tsection;
-    $this->rowName = $rowName;
-  }
+class RowHandle extends Handle {
 
   /**
    * @param string $colName
@@ -32,7 +11,7 @@ class RowHandle {
    * @return $this
    */
   function td($colName, $content) {
-    $this->tsection->td($this->rowName, $colName, $content);
+    $this->tsection->td($this->handleName, $colName, $content);
     return $this;
   }
 
@@ -43,7 +22,7 @@ class RowHandle {
    * @return $this
    */
   function th($colName, $content) {
-    $this->tsection->th($this->rowName, $colName, $content);
+    $this->tsection->th($this->handleName, $colName, $content);
     return $this;
   }
 
@@ -55,7 +34,7 @@ class RowHandle {
    */
   function tdMultiple(array $cells) {
     foreach ($cells as $colName => $content) {
-      $this->tsection->td($this->rowName, $colName, $content);
+      $this->tsection->td($this->handleName, $colName, $content);
     }
     return $this;
   }
@@ -68,7 +47,7 @@ class RowHandle {
    */
   function thMultiple(array $cells) {
     foreach ($cells as $colName => $content) {
-      $this->tsection->th($this->rowName, $colName, $content);
+      $this->tsection->th($this->handleName, $colName, $content);
     }
     return $this;
   }
@@ -84,7 +63,7 @@ class RowHandle {
    * @return $this
    */
   function tdOpenEnd($colName, $content) {
-    $this->tsection->tdOpenEnd($this->rowName, $colName, $content);
+    $this->tsection->tdOpenEnd($this->handleName, $colName, $content);
     return $this;
   }
 
@@ -99,7 +78,7 @@ class RowHandle {
    * @return $this
    */
   public function thOpenEnd($colName, $content) {
-    $this->tsection->thOpenEnd($this->rowName, $colName, $content);
+    $this->tsection->thOpenEnd($this->handleName, $colName, $content);
   }
 
 }

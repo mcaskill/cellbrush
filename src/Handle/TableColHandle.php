@@ -17,7 +17,7 @@ class TableColHandle extends SectionColHandle {
    * @param TableSection $tbody
    * @param string $colName
    */
-  function __construct($table, $tbody, $colName) {
+  function __construct(Table $table, TableSection $tbody, $colName) {
     $this->table = $table;
     parent::__construct($tbody, $colName);
   }
