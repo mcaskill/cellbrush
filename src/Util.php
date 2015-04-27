@@ -11,12 +11,12 @@ class Util {
    *
    * @return string
    */
-  static function htmlAttributes(array $attributes = array()) {
+  static function htmlAttributes(array $attributes = []) {
     foreach ($attributes as $attribute => &$data) {
       $data = implode(' ', (array) $data);
-      $data = $attribute . '="' . self::checkPlain($data) . '"';
+      $data = $attribute . (empty($data) ? '' : '="' . self::checkPlain($data) . '"');
     }
-    return $attributes ? ' ' . implode(' ', $attributes) : '';
+    return ($attributes ? ' ' . implode(' ', $attributes) : '');
   }
 
   /**

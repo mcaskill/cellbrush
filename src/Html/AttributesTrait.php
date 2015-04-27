@@ -99,7 +99,7 @@ trait AttributesTrait {
    */
   function setAttributes(array $attributes) {
     $clone = clone $this;
-    foreach ($attributes as $attribute => $value) {
+    foreach ($attributes as $key => $value) {
       if (isset($this->attributes[$key]) && $value === $this->attributes[$key]) {
         continue;
       }
@@ -120,11 +120,7 @@ trait AttributesTrait {
     if (!empty($this->classes)) {
       $attributes['class'] = implode(' ', $this->classes);
     }
-    foreach ($attributes as $attribute => &$data) {
-      $data = implode(' ', (array) $data);
-      $data = $attribute . '="' . Util::checkPlain($data) . '"';
-    }
-    return $attributes ? ' ' . implode(' ', $attributes) : '';
+    return Util::htmlAttributes($attributes);
   }
 
   /**
