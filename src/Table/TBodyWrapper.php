@@ -110,13 +110,25 @@ class TBodyWrapper implements TableSectionStructureInterface {
   }
 
   /**
-   * @param string[] $rowClasses
-   *   Format: $[$rowName] = $class
+   * @param string $rowName
+   * @param string[] $classes
    *
    * @return $this
    */
-  public function addRowClasses(array $rowClasses) {
-    $this->tbody->addRowClasses($rowClasses);
+  public function addRowClasses($rowName, array $classes) {
+    $this->tbody->addRowClasses($rowName, $classes);
+    return $this;
+  }
+
+  /**
+   * @param string[] $rowClasses
+   *   Format: - $[$rowName] = $class
+   *           - $[$rowName] = $classes[]
+   *
+   * @return $this
+   */
+  public function mapRowClasses(array $rowClasses) {
+    $this->tbody->mapRowClasses($rowClasses);
     return $this;
   }
 
@@ -128,6 +140,41 @@ class TBodyWrapper implements TableSectionStructureInterface {
    */
   public function addRowStriping(array $striping = ['odd', 'even']) {
     $this->tbody->addRowStriping($striping);
+    return $this;
+  }
+
+  /**
+   * @param string $rowName
+   * @param string $key
+   * @param string $value
+   *
+   * @return $this
+   */
+  public function setRowAttribute($rowName, $key, $value) {
+    $this->tbody->setRowAttribute($rowName, $key, $value);
+    return $this;
+  }
+
+  /**
+   * @param string $rowName
+   * @param string[] $attributes
+   *   Format: $[$key] = $value
+   *
+   * @return $this
+   */
+  public function setRowAttributes($rowName, array $attributes) {
+    $this->tbody->setRowAttributes($rowName, $attributes);
+    return $this;
+  }
+
+  /**
+   * @param string[] $namesAttributes
+   *   Format: $[$rowName] = [$key => $value]
+   *
+   * @return $this
+   */
+  public function mapRowAttributes(array $namesAttributes) {
+    $this->tbody->mapRowAttributes($namesAttributes);
     return $this;
   }
 

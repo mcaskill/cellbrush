@@ -38,13 +38,36 @@ trait RowAttributesTrait {
   }
 
   /**
-   * @param string[] $rowClasses
-   *   Format: $[$rowName] = $class
+   * @param string $rowName
+   * @param string[] $classes
    *
    * @return $this
    */
-  public function addRowClasses(array $rowClasses) {
+  public function addRowClasses($rowName, array $classes) {
+    $this->rowAttributes->nameAddClasses($rowName, $classes);
+    return $this;
+  }
+
+  /**
+   * @param string[] $rowClasses
+   *   Format: - $[$rowName] = $class
+   *           - $[$rowName] = $classes[]
+   *
+   * @return $this
+   */
+  public function mapRowClasses(array $rowClasses) {
     $this->rowAttributes->namesAddClasses($rowClasses);
+    return $this;
+  }
+
+  /**
+   * @param string[] $striping
+   *   Classes for striping. E.g. ['odd', 'even'], or '['1st', '2nd', '3rd'].
+   *
+   * @return $this
+   */
+  public function addRowStriping(array $striping = ['odd', 'even']) {
+    $this->rowStripings[] = $striping;
     return $this;
   }
 
@@ -61,24 +84,25 @@ trait RowAttributesTrait {
   }
 
   /**
+   * @param string $rowName
+   * @param string[] $attributes
+   *   Format: $[$key] = $value
+   *
+   * @return $this
+   */
+  public function setRowAttributes($rowName, array $attributes) {
+    $this->rowAttributes->nameSetAttributes($rowName, $attributes);
+    return $this;
+  }
+
+  /**
    * @param string[] $namesAttributes
    *   Format: $[$rowName] = [$key => $value]
    *
    * @return $this
    */
-  public function setRowAttributes(array $namesAttributes) {
+  public function mapRowAttributes(array $namesAttributes) {
     $this->rowAttributes->namesSetAttributes($namesAttributes);
-    return $this;
-  }
-
-  /**
-   * @param string[] $striping
-   *   Classes for striping. E.g. ['odd', 'even'], or '['1st', '2nd', '3rd'].
-   *
-   * @return $this
-   */
-  public function addRowStriping(array $striping = ['odd', 'even']) {
-    $this->rowStripings[] = $striping;
     return $this;
   }
 

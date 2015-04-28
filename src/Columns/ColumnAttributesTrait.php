@@ -32,12 +32,24 @@ trait ColumnAttributesTrait {
   }
 
   /**
-   * @param string[] $colClasses
-   *   Format: $[$colName] = $class
+   * @param string $colName
+   * @param string[] $classes
    *
    * @return $this
    */
-  public function addColClasses(array $colClasses) {
+  public function addColClasses($colName, array $classes) {
+    $this->colAttributes->nameAddClasses($colName, $classes);
+    return $this;
+  }
+
+  /**
+   * @param string[] $colClasses
+   *   Format: - $[$colName] = $class
+   *           - $[$colName] = $classes[]
+   *
+   * @return $this
+   */
+  public function mapColClasses(array $colClasses) {
     $this->colAttributes->namesAddClasses($colClasses);
     return $this;
   }
@@ -55,12 +67,24 @@ trait ColumnAttributesTrait {
   }
 
   /**
+   * @param string $colName
+   * @param string[] $attributes
+   *   Format: $[$key] = $value
+   *
+   * @return $this
+   */
+  public function setColAttributes($colName, array $attributes) {
+    $this->colAttributes->nameSetAttributes($colName, $attributes);
+    return $this;
+  }
+
+  /**
    * @param string[] $namesAttributes
    *   Format: $[$colName] = [$key => $value]
    *
    * @return $this
    */
-  public function setColAttributes(array $namesAttributes) {
+  public function mapColAttributes(array $namesAttributes) {
     $this->colAttributes->namesSetAttributes($namesAttributes);
     return $this;
   }
