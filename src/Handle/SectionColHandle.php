@@ -5,6 +5,48 @@ namespace Donquixote\Cellbrush\Handle;
 class SectionColHandle extends Handle {
 
   /**
+   * @param string $class
+   *
+   * @return $this
+   */
+  public function addClass($class) {
+    $this->tsection->addColClass($this->handleName, $class);
+    return $this;
+  }
+
+  /**
+   * @param string[] $classes
+   *
+   * @return $this
+   */
+  public function addClasses(array $classes) {
+    $this->tsection->addColClasses($this->handleName, $classes);
+    return $this;
+  }
+
+  /**
+   * @param string $key
+   * @param string $value
+   *
+   * @return $this
+   */
+  public function setAttribute($key, $value) {
+    $this->tsection->setColAttribute($this->handleName, $key, $value);
+    return $this;
+  }
+
+  /**
+   * @param string[] $attributes
+   *   Format: $[$key] = $value
+   *
+   * @return $this
+   */
+  public function setAttributes(array $attributes) {
+    $this->tsection->setColAttributes($this->handleName, $attributes);
+    return $this;
+  }
+
+  /**
    * @param string $rowName
    * @param string $content
    *
