@@ -46,7 +46,7 @@ class DynamicAttributesMap extends AttributesMapBase {
       if ( ! is_array($classes) ) {
         $classes = [ $classes ];
       }
-      if ( count($attributes) ) {
+      if ( count($classes) ) {
         foreach ($classes as $class) {
           $this->classes[$name][$class] = $class;
         }
